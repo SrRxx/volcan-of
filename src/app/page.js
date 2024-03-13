@@ -6,11 +6,14 @@ import { FunnelIcon, HomeIcon, MapPinIcon } from "@heroicons/react/20/solid";
 import Map from "./components/Map";
 import ListSearch from "./components/ListSearch";
 
+import { usePathname, useRouter } from "next/navigation";
+import Guralp from "./guralp/page";
+
 export default function Home() {
   const [emplazamientos, setE] = useState([]);
   const [estaciones, setES] = useState([]);
   const [sensores, setS] = useState([]);
-  
+
   // Item seleccionado
   const [_selected, _setSelected] = useState({});
 
@@ -57,8 +60,8 @@ export default function Home() {
           type: 2,
           emplazamiento: 1,
           icon: <HomeIcon className="w-full h-auto" />,
-        }
-      ])
+        },
+      ]);
       // Sensores
       setS([
         {
@@ -66,16 +69,16 @@ export default function Home() {
           name: "Sensor 1",
           type: 3,
           emplazamiento: 1,
-          estacion: 1
+          estacion: 1,
         },
         {
           id: 2,
           name: "Sensor 2",
           type: 3,
           emplazamiento: 1,
-          estacion: 2
-        }
-      ])
+          estacion: 2,
+        },
+      ]);
       setLoading(false);
     }
 
@@ -85,12 +88,43 @@ export default function Home() {
       //adMap.remove();
     }
   }, [emplazamientos, estaciones, sensores]);
+
+  const router = useRouter();
+
+  const getContent = () => {
+    const pathname = usePathname()
+    switch (pathname) {
+      case '/':
+        return <Map _selected={_selected} _setSelected={_setSelected} />;
+      case '/guralp':
+        return <Guralp />;
+      default:
+        return <h1>No encontrado</h1>;
+    }
+  };
   return (
     <>
-      <div className="w-full h-full">
+      {/*
+        <div className="w-full h-full">
         <Sidebar emplazamientos={emplazamientos} estaciones={estaciones} sensores={sensores} setE={setE} setES={setES} setS={setS} _selected={_selected} _setSelected={_setSelected} />
         <ListSearch volcanes={volcanes} />
         <Map _selected={_selected} _setSelected={_setSelected} />
+      </div>
+      */}
+
+      <div className="w-full h-full">
+        <Sidebar
+          emplazamientos={emplazamientos}
+          estaciones={estaciones}
+          sensores={sensores}
+          setE={setE}
+          setES={setES}
+          setS={setS}
+          _selected={_selected}
+          _setSelected={_setSelected}
+        />
+        <ListSearch volcanes={volcanes} />
+        {getContent()}
       </div>
     </>
   );

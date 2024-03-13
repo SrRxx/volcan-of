@@ -4,6 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Basic from "./Modals/Basic";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Sidebar({
   emplazamientos,
@@ -13,12 +14,12 @@ export default function Sidebar({
   setEs,
   setS,
   _selected,
-  _setSelected
+  _setSelected,
 }) {
   const [dataForm, setDataForm] = useState({});
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState(null);
-  const [content, setContent] = useState(null);  
+  const [content, setContent] = useState(null);
 
   const create = (type) => {};
 
@@ -121,7 +122,7 @@ export default function Sidebar({
                 >
                   <PlusIcon width={"30"} height={"30"} className="block" />
                 </li>
-                {data.map((item, id) => (
+                {Array.isArray(data) ? data.map((item, id) => (
                   <li
                     key={"item-" + id}
                     className={`relative cursor-pointer select-none p-2 border-solid border-slate-400 border-[1px] rounded-xl shadow-md ${
@@ -137,7 +138,7 @@ export default function Sidebar({
                   >
                     {item.name.substr(0, 5)}...
                   </li>
-                ))}
+                )) : (<></>)}
               </ul>
             </Disclosure.Panel>
           </>
@@ -165,6 +166,13 @@ export default function Sidebar({
           <ListButton _title={"Estaciones"} _type={2} data={estaciones} />
           {/* Sensores */}
           <ListButton _title={"Sensores"} _type={3} data={sensores} />
+          {/* Enlaces */}
+          <Link
+            href={"/guralp"}
+            className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+          >
+            Guralp
+          </Link>
         </nav>
       </div>
       <Basic show={show} setShow={setShow} title={title} content={content} />
