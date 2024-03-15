@@ -10,15 +10,16 @@ import { usePathname, useRouter } from "next/navigation";
 import Guralp from "./guralp/page";
 
 export default function Home() {
-  const [emplazamientos, setE] = useState([]);
-  const [estaciones, setES] = useState([]);
-  const [sensores, setS] = useState([]);
+  const [emplazamientos, setE] = useState([]); // Almacenar emplazamientos
+  const [estaciones, setES] = useState([]); // Almacenar estaciones
+  const [sensores, setS] = useState([]); // Almacenar sensores
 
   // Item seleccionado
-  const [_selected, _setSelected] = useState({});
+  const [_selected, _setSelected] = useState({}); //  Objeto con la información del icono seleccionado
 
   const [Loading, setLoading] = useState(true);
   const [volcanes] = useState([
+    //  Volcanes de prueba para el mapa
     { name: "Volcán Galeras", lat: 1.2166666666667, long: -77.366666666667 },
     { name: "Volcán Chiles", lat: 0.82111111, long: -77.935 },
     { name: "Volcán Cumbal", lat: 0.95583333333333, long: -77.883333333333 },
