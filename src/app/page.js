@@ -33,15 +33,7 @@ export default function Home() {
           name: "Emplazamiento 1",
           type: 1,
           pos: { lat: 1.21955094115755, long: -77.3578839888642 },
-          icon: <MapPinIcon className="w-full h-auto" />,
-          color: "red",
-        },
-        {
-          id: 2,
-          name: "Emplazamiento 2",
-          type: 1,
-          pos: { lat: 0.9540927518215625, long: -77.8861141204834 },
-          icon: <MapPinIcon className="w-full h-auto" />,
+          icon: <HomeIcon className="w-full h-auto" />,
           color: "green",
         },
       ]);
@@ -53,13 +45,7 @@ export default function Home() {
           type: 2,
           emplazamiento: 1,
           icon: <HomeIcon className="w-full h-auto" />,
-        },
-        {
-          id: 2,
-          name: "Estación 2",
-          type: 2,
-          emplazamiento: 1,
-          icon: <HomeIcon className="w-full h-auto" />,
+          color: "green",
         },
       ]);
       // Sensores
@@ -70,13 +56,8 @@ export default function Home() {
           type: 3,
           emplazamiento: 1,
           estacion: 1,
-        },
-        {
-          id: 2,
-          name: "Sensor 2",
-          type: 3,
-          emplazamiento: 1,
-          estacion: 2,
+          icon: <MapPinIcon className="w-full h-auto" />,
+          color: "green",
         },
       ]);
       setLoading(false);
@@ -87,16 +68,23 @@ export default function Home() {
     if (adMap) {
       //adMap.remove();
     }
-  }, [emplazamientos, estaciones, sensores]);
+  }, [Loading, emplazamientos, estaciones, sensores]);
 
   const router = useRouter();
 
   const getContent = () => {
-    const pathname = usePathname()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const pathname = usePathname();
     switch (pathname) {
-      case '/':
-        return <Map _selected={_selected} _setSelected={_setSelected} />;
-      case '/guralp':
+      case "/":
+        return (
+          <Map
+            _selected={_selected}
+            _setSelected={_setSelected}
+            emplazamientos={emplazamientos}
+          />
+        );
+      case "/guralp":
         return <Guralp />;
       default:
         return <h1>No encontrado</h1>;

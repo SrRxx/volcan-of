@@ -5,6 +5,7 @@ import { ChevronUpIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Basic from "./Modals/Basic";
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar({
   emplazamientos,
@@ -95,6 +96,8 @@ export default function Sidebar({
     setContent(typeContent[type].content);
   };
 
+  const pathname = usePathname();
+
   function ListButton({ _title, _type, data }) {
     return (
       <Disclosure>
@@ -113,32 +116,30 @@ export default function Sidebar({
                 className="grid grid-cols-3 relative p-0 m-0 list-none gap-1
                     "
               >
-                <li
-                  className={`relative cursor-pointer select-none p-2 border-solid border-slate-400 border-[1px] rounded-xl shadow-md align-middle content-center justify-center items-center`}
-                  title={"Crear emplazamiento"}
-                  onClick={() => {
-                    //openModal(_type);
-                  }}
-                >
-                  <PlusIcon width={"30"} height={"30"} className="block" />
-                </li>
-                {Array.isArray(data) ? data.map((item, id) => (
-                  <li
-                    key={"item-" + id}
-                    className={`relative cursor-pointer select-none p-2 border-solid border-slate-400 border-[1px] rounded-xl shadow-md ${
-                      _selected.id === item.id && _selected.type === item.type
-                        ? "border-blue-800 border-[2px] border-solid"
-                        : ""
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      _setSelected(item);
-                    }}
-                    title={item.name}
-                  >
-                    {item.name.substr(0, 5)}...
-                  </li>
-                )) : (<></>)}
+                {Array.isArray(data) ? (
+                  data.map((item, id) => (
+                    <li
+                      key={"item-" + id}
+                      className={`relative cursor-pointer select-none p-2 border-solid border-slate-400 border-[1px] rounded-xl shadow-md ${
+                        _selected.id === item.id && _selected.type === item.type
+                          ? "border-blue-800 border-[2px] border-solid"
+                          : ""
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        _setSelected(item);
+                      }}
+                      title={item.name}
+                    >
+                      <span style={{ color: `${item.color}` }}>
+                        {item.icon}
+                        {item.name.substr(0, 5)}...
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <></>
+                )}
               </ul>
             </Disclosure.Panel>
           </>
@@ -156,16 +157,27 @@ export default function Sidebar({
           </h5>
         </div>
         <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-          {/* Emplazamientos */}
-          <ListButton
-            _title={"Emplazamientos"}
-            _type={1}
-            data={emplazamientos}
-          />
-          {/* Estaciones */}
-          <ListButton _title={"Estaciones"} _type={2} data={estaciones} />
-          {/* Sensores */}
-          <ListButton _title={"Sensores"} _type={3} data={sensores} />
+          {pathname === "/" ? (
+            <>
+              {/* Emplazamientos */}
+              <ListButton
+                _title={"Emplazamientos"}
+                _type={1}
+                data={emplazamientos}
+              />
+              {/* Estaciones */}
+              <ListButton _title={"Estaciones"} _type={2} data={estaciones} />
+              {/* Sensores */}
+              <ListButton _title={"Sensores"} _type={3} data={sensores} />
+            </>
+          ) : (
+            <Link
+              href={"/volcan"}
+              className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+            >
+              Volcan
+            </Link>
+          )}
           {/* Enlaces */}
           <Link
             href={"/guralp"}
