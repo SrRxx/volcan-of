@@ -36,6 +36,24 @@ export default function Guralp() {
     }
   }, [Loading]);*/
 
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    if (Loading) {
+      fetchData();
+
+      setLoading(false);
+    }
+  }, [Loading]);
+
+  const fetchData = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/data/");
+    const jsonData = await response.json();
+
+    console.log(jsonData); 
+    setData(jsonData); 
+  };
+
   return (
     <div className="w-full h-full">
       <Sidebar />
@@ -44,13 +62,16 @@ export default function Guralp() {
         <Plot
           data={[
             {
-              x: [1, 2, 3],
-              y: [2, 6, 3],
-              type: "scatter",
-              mode: "lines+markers",
-              marker: { color: "red" },
+              x: data != null ? ( 
+                data.xArray
+              ) : (""),
+              y: data != null ? (
+                data.yArray
+              ) : (""),
+              type: "bar",
+              orientation: "v",
+              marker: { color: "rgba(0,0,255)" },
             },
-            { type: "bar", x: [1, 2, 3], y: [2, 5, 3] },
           ]}
           layout={{ width: 500, height: 400, title: "A Fancy Plot" }}
         />

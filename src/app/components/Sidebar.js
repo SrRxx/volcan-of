@@ -127,7 +127,11 @@ export default function Sidebar({
                       }`}
                       onClick={(e) => {
                         e.preventDefault();
-                        _setSelected(item);
+                        if(_type != 1) {
+                          _setSelected(item);
+                        } else {
+                          alert("Llevando a la ubicación...")
+                        }
                       }}
                       title={item.name}
                     >
